@@ -1,0 +1,26 @@
+version: '3'
+services:
+
+  api:
+    container_name: API
+    build:
+      context: .
+    links:
+      - mongodb
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - .env
+    ports:
+      - 9000:9000
+
+  mongodb:
+    image : mongo
+    container_name: Database
+    penvironment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /tmp/mongo:/data/db
+    ports:
+      - 27017:27017

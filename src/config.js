@@ -39,7 +39,7 @@ const config = {
   test: { },
   development: {
     mongo: {
-      uri: 'mongodb://localhost/video-app-backend-dev',
+      uri: 'mongodb://mongodb/video-app-backend-dev',
       options: {
         debug: true
       }
