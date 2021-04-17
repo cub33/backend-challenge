@@ -6,6 +6,7 @@ services:
     build:
       context: .
     links:
+      - redis
       - mongodb
     environment:
       - NODE_ENV=development
@@ -13,6 +14,13 @@ services:
       - .env
     ports:
       - 9000:9000
+
+  redis:
+    image: redis:alpine
+    container_name: SessionManager
+    command: redis-server --appendonly no --save ''
+    ports:
+      - 6379:6379    
 
   mongodb:
     image : mongo

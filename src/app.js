@@ -1,6 +1,7 @@
 import http from 'http'
 import { env, mongo, port, ip, apiRoot } from './config'
 import mongoose from './services/mongoose'
+import redis from './services/redis'
 import express from './services/express'
 import api from './api'
 
@@ -12,8 +13,8 @@ const server = {
       useNewUrlParser: true,
       serverSelectionTimeoutMS: 3000
     }
+    redis.connect()
     await mongoose.connect(mongo.uri, options)
-  
     const app = express(apiRoot, api)
     const server = http.createServer(app)
   
