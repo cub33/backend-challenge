@@ -1,3 +1,4 @@
 require('@babel/register')
 
-exports = module.exports = require('./app')
+const server = require('./app')
+server.init()
