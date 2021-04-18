@@ -13,10 +13,10 @@ from watching more than 3 video streams concurrently.
 ## Design and scalability
 
 ### Infrastructure
-![infrastructure](../assets/infra.png?raw=true)
+![infrastructure](./assets/images/infra.png?raw=true)
 
 ### Services
-![services](../assets/services.png?raw=true)
+![services](./assets/images/services.png?raw=true)
 The backend consists of three services: 
 - User Service: manage user accounts
 - Content Service: serve the video content - doesn’t manage authentication
