@@ -90,8 +90,5 @@ userSchema.plugin(mongooseKeywords, { paths: ['email', 'name'] })
 
 const model = mongoose.model('User', userSchema)
 
-model.create({ email: 'gab@cubws.com', password: 'gab123' })
-
-
 export const schema = model.schema
 export default model
