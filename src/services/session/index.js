@@ -1,6 +1,9 @@
 import redis from '../redis'
+import { createLogger } from '../../utils/logger'
+const logger = createLogger({ ctx: 'session_manager' })
 
-const redisClient = redis.createConnection()
+const redisClient = redis.createClient()
+
 const PLAY_SESSIONS_LIMIT = 3
 const MAX_LIMIT_ERR_MSG = 'MAX_LIMIT_REACHED'
 
@@ -9,12 +12,12 @@ const addPlayContentSession = userId => new Promise((resolve, reject) => {
     if (err) return reject(err)
 
     if (playSessionNumber <= PLAY_SESSIONS_LIMIT) {
-      console.log(`New play session for user ${userId} => ` +
+      logger.info(`New play session for user ${userId} => ` +
         `${playSessionNumber} active now`)
       return resolve()
     }
     else {
-      console.log(`Reached max play sessions limit for user ${userId}`)
+      logger.info(`Reached max play sessions limit for user ${userId}`)
       redisClient.decr(userId)
       return reject(new Error(MAX_LIMIT_ERR_MSG))
     }
@@ -24,7 +27,7 @@ const addPlayContentSession = userId => new Promise((resolve, reject) => {
 const removePlayContentSession = userId => new Promise((resolve, reject) => {
   redisClient.decr(userId, (err, playSessionNumber) => {
     if (err) return reject(err)
-    console.log(`Closed play session for user ${userId} => ` +
+    logger.info(`Closed play session for user ${userId} => ` +
     `${playSessionNumber} active now`)
     return resolve()
   })
@@ -35,7 +38,7 @@ const removePlayContentSession = userId => new Promise((resolve, reject) => {
 // const registerAccountSession = userId => new Promise((resolve, reject) => {
 //   redisClient.setnx(userId, 0, err => { // set if not exists
 //     if (err) return reject(err)
-//     console.log(`User ${userId} account session registered`)
+//     logger.info(`User ${userId} account session registered`)
 //     return resolve()
 //   })
 // })
@@ -43,7 +46,7 @@ const removePlayContentSession = userId => new Promise((resolve, reject) => {
 // const deleteAccountSession = userId => new Promise((resolve, reject) => {
 //   redisClient.del(userId, err => {
 //     if (err) return reject(err)
-//     console.log(`User ${userId} account session removed`)
+//     logger.info(`User ${userId} account session removed`)
 //     return resolve()
 //   })
 // })
@@ -67,7 +70,7 @@ export const session = ({ type, action }) => async ({ user }, res, next) => {
       else if (action === 'remove') {
         removePlayContentSession(user.id)
           .then(next)
-          .catch(err => console.log(err))
+          .catch(err => logger.error(err))
       }
       
       break;
@@ -75,7 +78,7 @@ export const session = ({ type, action }) => async ({ user }, res, next) => {
       // TODO
       break;
     default:
-      console.log('Invalid session type')
+      logger.error('Invalid session type')
       break;
   }
 }

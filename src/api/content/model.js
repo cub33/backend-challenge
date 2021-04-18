@@ -1,4 +1,6 @@
 import mongoose, { Schema } from 'mongoose'
+import { createLogger } from '../../utils/logger'
+const logger = createLogger({ctx: 'content_model'})
 
 const contentSchema = new Schema({
   name: {
@@ -40,7 +42,7 @@ contentSchema.methods = {
   },
 
   play () {
-    console.log(`Content "${this.name}" requested for playing`)
+    logger.info(`Content "${this.name}" requested for playing`)
     return this.src
   }
 
