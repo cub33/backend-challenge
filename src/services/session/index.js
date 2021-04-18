@@ -14,6 +14,12 @@ const addPlayContentSession = userId => new Promise((resolve, reject) => {
     if (playSessionNumber <= PLAY_SESSIONS_LIMIT) {
       logger.info(`New play session for user ${userId} => ` +
         `${playSessionNumber} active now`)
+
+      setTimeout(() => {
+        removePlayContentSession(userId)
+          .catch(err => logger.error(err))
+      }, 10000)
+
       return resolve()
     }
     else {
@@ -60,7 +66,6 @@ export const session = ({ type, action }) => async ({ user }, res, next) => {
         await addPlayContentSession(user.id)
           .then(next)
           .catch(err => {
-            console.log(err)
             if (err.message === MAX_LIMIT_ERR_MSG) {
               return res.status(400).end()
             }
