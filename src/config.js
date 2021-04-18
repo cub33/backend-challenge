@@ -37,7 +37,7 @@ const config = {
     }
   },
   test: { },
-  development: {
+  docker: {
     mongo: {
       uri: 'mongodb://mongodb/video-app-backend-dev',
       options: {
@@ -46,6 +46,18 @@ const config = {
     },
     redis: {
       url: 'redis',
+      port: 6379
+    }
+  },
+  development: {
+    mongo: {
+      uri: 'mongodb://localhost/video-app-backend-dev',
+      options: {
+        debug: true
+      }
+    },
+    redis: {
+      url: 'localhost',
       port: 6379
     }
   },
