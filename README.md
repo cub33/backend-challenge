@@ -17,6 +17,7 @@ from watching more than 3 video streams concurrently.
 
 ### Services
 ![services](./assets/images/services.png?raw=true)
+
 The backend consists of three services: 
 - User Service: manage user accounts
 - Content Service: serve the video content - doesn’t manage authentication
