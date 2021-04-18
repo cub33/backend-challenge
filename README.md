@@ -16,12 +16,13 @@ from watching more than 3 video streams concurrently.
 ![infrastructure](./assets/images/infra.png?raw=true)
 
 ### Services
-![services](./assets/images/services.png?raw=true)
 
 The backend consists of three services: 
 - User Service: manage user accounts
 - Content Service: serve the video content - doesn’t manage authentication
 - Session Service: authenticate requests and manage users’ sessions, included content access
+
+![services](./assets/images/services.png?raw=true)
 
 For this case I feel more appropriate to go with a microservices approach because:
 - we don’t manage scaling with serverless and thus didn’t feel appropriate to use for this challenge
