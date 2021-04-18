@@ -29,7 +29,6 @@ contentSchema.methods = {
       id: this.id,
       name: this.name,
       type: this.type,
-      src: this.src,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt
     }
@@ -42,6 +41,7 @@ contentSchema.methods = {
 
   play () {
     console.log(`Content "${this.name}" requested for playing`)
+    return this.src
   }
 
 }

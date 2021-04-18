@@ -3,6 +3,7 @@ import { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
 import { token } from '../../services/passport'
 import { create, index, show, play, update, destroy } from './controller'
+import { session } from '../../services/session'
 import { schema } from './model'
 export Content, { schema } from './model'
 
@@ -63,6 +64,7 @@ router.get('/:id',
  */
 router.get('/:id/play',
   token({ required: true }),
+  session({ type: 'content', action: 'play' }),
   play)
 
 /**
