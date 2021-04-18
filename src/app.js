@@ -13,7 +13,7 @@ const server = {
       useNewUrlParser: true,
       serverSelectionTimeoutMS: 3000
     }
-    redis.connect()
+    redis.createConnection()
     await mongoose.connect(mongo.uri, options)
     const app = express(apiRoot, api)
     const server = http.createServer(app)
