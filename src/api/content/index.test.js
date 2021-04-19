@@ -1,5 +1,5 @@
 import request from 'supertest'
-import { apiRoot } from '../../config'
+import { apiRoot, PLAY_SESSIONS_LIMIT } from '../../config'
 import { signSync } from '../../services/jwt'
 import express from '../../services/express'
 import { User } from '../user'
@@ -125,7 +125,7 @@ test('GET /content/:id/play (user) 200', async () => {
 })
 
 test('GET /content/:id/play (user) 403', async () => {
-  for (let i = 0; i < 3; i++) { // TODO: add from .env
+  for (let i = 0; i < PLAY_SESSIONS_LIMIT; i++) {
     await request(app())
       .get(apiRoot + `/${content.id}/play`)
       .send({ access_token: userSession })

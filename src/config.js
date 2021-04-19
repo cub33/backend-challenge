@@ -34,7 +34,8 @@ const config = {
         useNewUrlParser: true,
         useCreateIndex: true
       }
-    }
+    },
+    PLAY_SESSIONS_LIMIT: 3
   },
   test: { },
   docker: {

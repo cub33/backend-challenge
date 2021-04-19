@@ -1,4 +1,6 @@
 import redis from '../redis'
+import { PLAY_SESSIONS_LIMIT } from '../../config'
+
 import { createLogger } from '../../utils/logger'
 const logger = createLogger({ ctx: 'session_manager' })
 
@@ -8,7 +10,6 @@ redis.createConnection()
   .then(conn => redisClient = conn)
   .catch(err => logger.error(err))
 
-const PLAY_SESSIONS_LIMIT = 3 // TODO: import from .env
 const MAX_LIMIT_ERR_MSG = 'MAX_LIMIT_REACHED'
 
 const addPlayContentSession = userId => new Promise((resolve, reject) => {
