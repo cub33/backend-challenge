@@ -28,7 +28,7 @@ For this case I feel more appropriate to go with a microservices approach becaus
 - we don’t manage scaling with serverless and thus didn’t feel appropriate to use for this challenge
 - we need a session management service with custom management so it is more convenient to manage the service directly
 - considering a large scale usage, running a serverless infrastructure may be more expensive
-we could reuse the same services for other applications
+- we could reuse the same services for other applications
 - it is more customizable
 
 In this case we would scale the services individually. Taking in consideration that database services are hosted in third-party infrastructures, the only service to scale is the Node.js application.
@@ -40,7 +40,12 @@ In both cases, the API should be sitting behind a load balancer which should red
 
 
 ## Local environment
-To spawn a complete environment of the backend, first create a `.env` file:
+First, install node packages with:
+```bash
+npm install
+```
+
+Then, create a `.env` file:
 ```bash
 $ cp .env.example .env
 ```
@@ -50,6 +55,7 @@ then, run:
 $ docker-compose up --build
 ```
 
+### Without docker-compose
 If you are not using `docker-compose`, make sure you have `mongo` and `redis` services running on their respective ports:
 
 ```bash
