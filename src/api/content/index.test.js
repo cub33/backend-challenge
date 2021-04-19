@@ -14,18 +14,17 @@ beforeEach(async () => {
   const admin = await User.create({ email: 'c@c.com', password: '123456', role: 'admin' })
   userSession = signSync(user.id)
   adminSession = signSync(admin.id)
-  content = await Content.create({})
+  content = await Content.create({ name: 'test', type: 'vod', src: 'test' })
 })
 
 test('POST /content 201 (admin)', async () => {
   const { status, body } = await request(app())
     .post(`${apiRoot}`)
-    .send({ access_token: adminSession, name: 'test', type: 'test', src: 'test' })
+    .send({ access_token: adminSession, name: 'test', type: 'vod', src: 'test' })
   expect(status).toBe(201)
   expect(typeof body).toEqual('object')
   expect(body.name).toEqual('test')
-  expect(body.type).toEqual('test')
-  expect(body.src).toEqual('test')
+  expect(body.type).toEqual('vod')
 })
 
 test('POST /content 401 (user)', async () => {
@@ -41,37 +40,34 @@ test('POST /content 401', async () => {
   expect(status).toBe(401)
 })
 
-test('GET /content 200', async () => {
-  const { status, body } = await request(app())
+test('GET /content 401', async () => {
+  const { status } = await request(app())
     .get(`${apiRoot}`)
-  expect(status).toBe(200)
-  expect(Array.isArray(body)).toBe(true)
+  expect(status).toBe(401)
 })
 
-test('GET /content/:id 200', async () => {
-  const { status, body } = await request(app())
+test('GET /content/:id 401', async () => {
+  const { status } = await request(app())
     .get(`${apiRoot}/${content.id}`)
-  expect(status).toBe(200)
-  expect(typeof body).toEqual('object')
-  expect(body.id).toEqual(content.id)
+  expect(status).toBe(401)
 })
 
 test('GET /content/:id 404', async () => {
   const { status } = await request(app())
     .get(apiRoot + '/123456789098765432123456')
+    .send({ access_token: adminSession })
   expect(status).toBe(404)
 })
 
 test('PUT /content/:id 200 (admin)', async () => {
   const { status, body } = await request(app())
     .put(`${apiRoot}/${content.id}`)
-    .send({ access_token: adminSession, name: 'test', type: 'test', src: 'test' })
+    .send({ access_token: adminSession, name: 'test', type: 'vod', src: 'test' })
   expect(status).toBe(200)
   expect(typeof body).toEqual('object')
   expect(body.id).toEqual(content.id)
   expect(body.name).toEqual('test')
-  expect(body.type).toEqual('test')
-  expect(body.src).toEqual('test')
+  expect(body.type).toEqual('vod')
 })
 
 test('PUT /content/:id 401 (user)', async () => {
@@ -90,7 +86,7 @@ test('PUT /content/:id 401', async () => {
 test('PUT /content/:id 404 (admin)', async () => {
   const { status } = await request(app())
     .put(apiRoot + '/123456789098765432123456')
-    .send({ access_token: adminSession, name: 'test', type: 'test', src: 'test' })
+    .send({ access_token: adminSession, name: 'test', type: 'vod', src: 'test' })
   expect(status).toBe(404)
 })
 
@@ -119,4 +115,24 @@ test('DELETE /content/:id 404 (admin)', async () => {
     .delete(apiRoot + '/123456789098765432123456')
     .query({ access_token: adminSession })
   expect(status).toBe(404)
+})
+
+test('GET /content/:id/play (user) 200', async () => {
+  const { status } = await request(app())
+    .get(apiRoot + `/${content.id}`)
+    .send({ access_token: userSession })
+  expect(status).toBe(200)
+})
+
+test('GET /content/:id/play (user) 403', async () => {
+  for (let i = 0; i < 3; i++) { // TODO: add from .env
+    await request(app())
+      .get(apiRoot + `/${content.id}/play`)
+      .send({ access_token: userSession })
+      console.log("content.id", content.id)
+  }
+  const { status } = await request(app())
+    .get(apiRoot + `/${content.id}/play`)
+    .send({ access_token: userSession })
+  expect(status).toBe(403)
 })

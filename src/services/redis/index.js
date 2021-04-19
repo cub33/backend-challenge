@@ -1,15 +1,23 @@
-import Redis from 'redis'
-import { redis } from '../../config'
+import { redis, env } from '../../config'
+
 import { createLogger } from '../../utils/logger'
 const logger = createLogger({ ctx: 'redis' })
 
 const instance = {
   createClient() {
-    return Redis.createClient({ host: redis.url })
+    let Redis = {}
+    if (env !== 'test') {
+      Redis = require('redis')
+      return Redis.createClient({ host: redis.url })
+    }
+    else {
+      Redis = require('redis-mock')
+      return Redis.createClient()
+    }
   },
   createConnection() {
     return new Promise((resolve, reject) => {
-      const connection = Redis.createClient({ host: redis.url })
+      const connection = this.createClient()
       connection.on('error', error => {
         connection.quit()
         logger.error('Connection error: ' + error)

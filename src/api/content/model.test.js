@@ -3,7 +3,7 @@ import { Content } from '.'
 let content
 
 beforeEach(async () => {
-  content = await Content.create({ name: 'test', type: 'test', src: 'test' })
+  content = await Content.create({ name: 'test', type: 'vod', src: 'test' })
 })
 
 describe('view', () => {
@@ -13,7 +13,6 @@ describe('view', () => {
     expect(view.id).toBe(content.id)
     expect(view.name).toBe(content.name)
     expect(view.type).toBe(content.type)
-    expect(view.src).toBe(content.src)
     expect(view.createdAt).toBeTruthy()
     expect(view.updatedAt).toBeTruthy()
   })
@@ -24,7 +23,6 @@ describe('view', () => {
     expect(view.id).toBe(content.id)
     expect(view.name).toBe(content.name)
     expect(view.type).toBe(content.type)
-    expect(view.src).toBe(content.src)
     expect(view.createdAt).toBeTruthy()
     expect(view.updatedAt).toBeTruthy()
   })

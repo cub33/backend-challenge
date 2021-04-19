@@ -2,9 +2,13 @@ import redis from '../redis'
 import { createLogger } from '../../utils/logger'
 const logger = createLogger({ ctx: 'session_manager' })
 
-const redisClient = redis.createClient()
+/* Runs when imported */
+let redisClient = {}
+redis.createConnection()
+  .then(conn => redisClient = conn)
+  .catch(err => logger.error(err))
 
-const PLAY_SESSIONS_LIMIT = 3
+const PLAY_SESSIONS_LIMIT = 3 // TODO: import from .env
 const MAX_LIMIT_ERR_MSG = 'MAX_LIMIT_REACHED'
 
 const addPlayContentSession = userId => new Promise((resolve, reject) => {
@@ -15,6 +19,7 @@ const addPlayContentSession = userId => new Promise((resolve, reject) => {
       logger.info(`New play session for user ${userId} => ` +
         `${playSessionNumber} active now`)
 
+      /* simulate user stop playing */
       setTimeout(() => {
         removePlayContentSession(userId)
           .catch(err => logger.error(err))
@@ -67,7 +72,7 @@ export const session = ({ type, action }) => async ({ user }, res, next) => {
           .then(next)
           .catch(err => {
             if (err.message === MAX_LIMIT_ERR_MSG) {
-              return res.status(400).end()
+              return res.status(403).end()
             }
             else return res.status(500).end()
           })
