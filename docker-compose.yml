@@ -17,7 +17,7 @@ services:
 
   redis:
     image: redis:alpine
-    container_name: SessionManager
+    container_name: Cache
     command: redis-server --appendonly no --save ''
     ports:
       - 6379:6379    
