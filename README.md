@@ -33,14 +33,19 @@ we could reuse the same services for other applications
 
 In this case we would scale the services individually. Taking in consideration that database services are hosted in third-party infrastructures, the only service to scale is the Node.js application.
 There are multiple ways to scale it depending on the environment: 
-we could host the service in a EC2 environment and scale it with auto scaling groups and cloudwatch using parameters like CPU usage or request-per-second
-we could host the service in a Kubernetes environment and let the HPA (Horizontal Pod Autoscaler) handle the scaling, setting the same parameters as above
+- we could host the service in a EC2 environment and scale it with auto scaling groups and cloudwatch using parameters like CPU usage or request-per-second
+- we could host the service in a Kubernetes environment and let the HPA (Horizontal Pod Autoscaler) handle the scaling, setting the same scaling parameters as above
+
 In both cases, the API should be sitting behind a load balancer which should redirect the request to the most free nodes.
 
 
 ## Local environment
-To spawn a complete environment of the backend, run
+To spawn a complete environment of the backend, first create a `.env` file:
+```bash
+$ cp .env.example .env
+```
 
+then, run:
 ```bash
 $ docker-compose up --build
 ```
@@ -48,8 +53,8 @@ $ docker-compose up --build
 If you are not using `docker-compose`, make sure you have `mongo` and `redis` services running on their respective ports:
 
 ```bash
-$ docker run -p 27017:27017 mongo
-$ docker run -p 6379:6379 redis:alpine
+$ docker run -p 27017:27017 -d mongo
+$ docker run -p 6379:6379 -d redis:alpine
 ```
 
 Then, run the server in development mode:
