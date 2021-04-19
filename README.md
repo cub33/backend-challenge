@@ -75,7 +75,6 @@ HTTP/1.1 201 Created
 {
   "id": "57d8160eabfa186c7887a8d3",
   "name": "test",
-  "picture":"https://gravatar.com/avatar/55502f40dc8b7c769880b10874abc9d0?d=identicon",
   "email": "test@example.com",
   "createdAt": "2016-09-13T15:06:54.633Z"
 }
@@ -95,7 +94,6 @@ HTTP/1.1 201 Created
   "user": {
     "id": "57d8160eabfa186c7887a8d3",
     "name": "test",
-    "picture": "https://gravatar.com/avatar/55502f40dc8b7c769880b10874abc9d0?d=identicon",
     "email": "test@example.com",
     "createdAt":"2016-09-13T15:06:54.633Z"
   }
@@ -118,8 +116,6 @@ curl -X GET http://0.0.0.0:9000/content/607c55840e977203b4d8b5e5/play -i -d "acc
 
 ```bash
 npm test # test using Jest
-npm run coverage # test and open the coverage report in the browser
-npm run lint # lint using ESLint
 npm run dev # run the API in development mode
 npm run docs # generate API docs
 ```
@@ -130,23 +126,48 @@ npm run docs # generate API docs
 
 ```
 src/
-├─ api/
-│  ├─ user/
-│  │  ├─ controller.js
-│  │  ├─ index.js
-│  │  ├─ index.test.js
-│  │  ├─ model.js
-│  │  └─ model.test.js
-│  └─ index.js
-├─ services/
-│  ├─ express/
-│  ├─ mongoose/
-│  ├─ passport/
-│  └─ custom-service/
-├─ app.js
-├─ config.js
-└─ index.js
+├── api
+│   ├── auth
+│   │   ├── controller.js
+│   │   ├── index.js
+│   │   └── index.test.js
+│   ├── content
+│   │   ├── controller.js
+│   │   ├── index.js
+│   │   ├── index.test.js
+│   │   ├── model.js
+│   │   └── model.test.js
+│   ├── index.js
+│   └── user
+│       ├── controller.js
+│       ├── index.js
+│       ├── index.test.js
+│       ├── model.js
+│       └── model.test.js
+├── app.js
+├── config.js
+├── index.js
+├── services
+│   ├── express
+│   │   └── index.js
+│   ├── jwt
+│   │   └── index.js
+│   ├── mongoose
+│   │   └── index.js
+│   ├── passport
+│   │   └── index.js
+│   ├── redis
+│   │   └── index.js
+│   ├── response
+│   │   ├── index.js
+│   │   └── index.test.js
+│   └── session
+│       └── index.js
+└── utils
+    └── logger
+        └── index.js
+
 ```
 
-### Credits
+## Credits
 The API scaffold was generated with [generator-rest](https://github.com/diegohaz/generator-rest)
